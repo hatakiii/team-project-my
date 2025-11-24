@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -25,9 +26,15 @@ export function Hero() {
             color, we bring your vision to life in our modern, welcoming salon.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-100">
-              Book Appointment
-            </Button>
+            <Link href="/booking">
+              <Button
+                size="lg"
+                className="bg-white text-black hover:bg-gray-100"
+              >
+                Booking
+              </Button>
+            </Link>
+
             <Button
               size="lg"
               variant="outline"
