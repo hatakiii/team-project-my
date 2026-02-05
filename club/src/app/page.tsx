@@ -1,4 +1,3 @@
-import { getRequestContext } from "@cloudflare/next-on-pages";
 import { addTodo, deleteTodo } from "./actions";
 
 export const runtime = "edge";

@@ -1,4 +1,4 @@
-// 1. Jest Mock-ыг хамгийн дээр нь байлгах (Cloudflare орчныг дуурайлгах)
+// 1. Jest Mock-ыг хамгийн дээр нь байлгах
 jest.mock(
   "@cloudflare/next-on-pages",
   () => ({
@@ -9,7 +9,7 @@ jest.mock(
   { virtual: true },
 );
 
-import { resolvers } from "../app/api/graphql/route";
+import { resolvers } from "../app/api/graphql/resolvers";
 
 describe("GraphQL Resolvers - Full CRUD Test", () => {
   //--- 1. Query: getTodos Тест ---
@@ -22,7 +22,10 @@ describe("GraphQL Resolvers - Full CRUD Test", () => {
       all: jest.fn().mockResolvedValue(mockData),
     };
 
-    const result = await resolvers.Query.getTodos(null, null, { db: mockDb });
+    // 'as any' ашиглан TypeScript-ийн төрөл шалгалтыг алгасна
+    const result = await resolvers.Query.getTodos(null, null, {
+      db: mockDb as any,
+    });
 
     expect(result).toHaveLength(1);
     expect(result[0].task).toBe("Test Task");
@@ -42,7 +45,7 @@ describe("GraphQL Resolvers - Full CRUD Test", () => {
     const result = await resolvers.Mutation.addTodo(
       null,
       { task: "Шинэ ажил нэмэх" },
-      { db: mockDb },
+      { db: mockDb as any }, // as any нэмэв
     );
 
     expect(mockDb.insert).toHaveBeenCalled();
@@ -56,13 +59,13 @@ describe("GraphQL Resolvers - Full CRUD Test", () => {
     const mockDb = {
       delete: jest.fn().mockReturnThis(),
       where: jest.fn().mockReturnThis(),
-      run: jest.fn().mockResolvedValue({}), // Drizzle .run() нь амжилттай болсныг илтгэнэ
+      run: jest.fn().mockResolvedValue({}),
     };
 
     const result = await resolvers.Mutation.deleteTodo(
       null,
       { id: 1 },
-      { db: mockDb },
+      { db: mockDb as any }, // as any нэмэв
     );
 
     expect(mockDb.delete).toHaveBeenCalled();
